@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "FaceDet"
 include(":app")
+include(":facelib")
