@@ -1,0 +1,1 @@
+facelib/src/main/assets/models/*.bin filter=lfs diff=lfs merge=lfs -text
