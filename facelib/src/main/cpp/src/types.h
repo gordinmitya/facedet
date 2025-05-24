@@ -1,5 +1,6 @@
 #ifndef TYPES_H
 #define TYPES_H
+
 #include <vector>
 
 typedef struct {
@@ -8,9 +9,8 @@ typedef struct {
 } Point;
 
 typedef struct {
-    Point top_left;
-    Point bottom_right;
-} BBox;
+    float x1, y1, x2, y2;
+} Box;
 
 typedef struct {
     Point left_eye;
@@ -21,7 +21,7 @@ typedef struct {
 } Landmarks;
 
 typedef struct {
-    BBox bbox;
+    Box bbox;
     Landmarks landmarks;
     float score; // Confidence score
 } Face;

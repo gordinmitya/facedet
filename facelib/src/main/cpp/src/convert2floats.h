@@ -6,31 +6,32 @@
 #include "types.h"
 
 inline int flattenPoint(const Point &pt, jfloat *arr, int offset) {
-    arr[offset] = pt.x;
-    arr[offset + 1] = pt.y;
-    return 2;
+    arr[offset++] = pt.x;
+    arr[offset++] = pt.y;
+    return offset;
 }
 
-inline int flattenBBox(const BBox &bbox, jfloat *arr, int offset) {
-    offset += flattenPoint(bbox.top_left, arr, offset);
-    offset += flattenPoint(bbox.bottom_right, arr, offset);
+inline int flattenBBox(const Box &bbox, jfloat *arr, int offset) {
+    arr[offset++] = bbox.x1;
+    arr[offset++] = bbox.y1;
+    arr[offset++] = bbox.x2;
+    arr[offset++] = bbox.y2;
     return offset;
 }
 
 inline int flattenLandmarks(const Landmarks &lm, jfloat *arr, int offset) {
-    offset += flattenPoint(lm.left_eye, arr, offset);
-    offset += flattenPoint(lm.right_eye, arr, offset);
-    offset += flattenPoint(lm.nose, arr, offset);
-    offset += flattenPoint(lm.left_mouth, arr, offset);
-    offset += flattenPoint(lm.right_mouth, arr, offset);
+    offset = flattenPoint(lm.left_eye, arr, offset);
+    offset = flattenPoint(lm.right_eye, arr, offset);
+    offset = flattenPoint(lm.nose, arr, offset);
+    offset = flattenPoint(lm.left_mouth, arr, offset);
+    offset = flattenPoint(lm.right_mouth, arr, offset);
     return offset;
 }
 
 inline int flattenFace(const Face &face, jfloat *arr, int offset) {
-    offset += flattenBBox(face.bbox, arr, offset);
-    offset += flattenLandmarks(face.landmarks, arr, offset);
-    arr[offset] = face.score;
-    offset += 1; // score
+    offset = flattenBBox(face.bbox, arr, offset);
+    offset = flattenLandmarks(face.landmarks, arr, offset);
+    arr[offset++] = face.score;
     return offset;
 }
 
@@ -52,7 +53,7 @@ inline jint convertFacesToFloats(
 
     int offset = 0;
     for (int i = 0; i < topK; ++i) {
-        offset += flattenFace(faces[i], arr, offset);
+        offset = flattenFace(faces[i], arr, offset);
     }
 
     env->ReleaseFloatArrayElements(javaArray, arr, JNI_COMMIT);

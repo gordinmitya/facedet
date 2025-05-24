@@ -10,7 +10,7 @@ namespace facelib_jni {
     constexpr const char *LANDMARKS_CLS = "me/gordinmitya/ds/facelib/Landmarks";
     constexpr const char *FACE_CLS = "me/gordinmitya/ds/facelib/Face";
     constexpr const char *POINT_CTOR = "(FF)V";
-    constexpr const char *RECT_CTOR = "(Lme/gordinmitya/ds/facelib/Point;Lme/gordinmitya/ds/facelib/Point;)V";
+    constexpr const char *RECT_CTOR = "(FFFF)V";
     constexpr const char *LANDMARKS_CTOR = "(Lme/gordinmitya/ds/facelib/Point;Lme/gordinmitya/ds/facelib/Point;Lme/gordinmitya/ds/facelib/Point;Lme/gordinmitya/ds/facelib/Point;Lme/gordinmitya/ds/facelib/Point;)V";
     constexpr const char *FACE_CTOR = "(Lme/gordinmitya/ds/facelib/Rect;Lme/gordinmitya/ds/facelib/Landmarks;F)V";
 }
@@ -21,14 +21,10 @@ inline jobject createJavaPoint(JNIEnv *env, const Point &pt) {
     return env->NewObject(cls, ctor, pt.x, pt.y);
 }
 
-inline jobject createJavaRect(JNIEnv *env, const BBox &bbox) {
+inline jobject createJavaRect(JNIEnv *env, const Box &bbox) {
     jclass cls = env->FindClass(facelib_jni::RECT_CLS);
     jmethodID ctor = env->GetMethodID(cls, "<init>", facelib_jni::RECT_CTOR);
-    jobject topLeft = createJavaPoint(env, bbox.top_left);
-    jobject bottomRight = createJavaPoint(env, bbox.bottom_right);
-    jobject rect = env->NewObject(cls, ctor, topLeft, bottomRight);
-    env->DeleteLocalRef(topLeft);
-    env->DeleteLocalRef(bottomRight);
+    jobject rect = env->NewObject(cls, ctor, bbox.x1, bbox.y1, bbox.x2, bbox.y2);
     return rect;
 }
 

@@ -6,8 +6,10 @@ class Point(
 )
 
 class Rect(
-    val topLeft: Point,
-    val bottomRight: Point
+    val x1: Float,
+    val y1: Float,
+    val x2: Float,
+    val y2: Float
 )
 
 class Landmarks(
@@ -45,7 +47,7 @@ fun floatsToFace(
     val rightMouthCorner = Point(floats[offset + 12], floats[offset + 13])
 
     return Face(
-        Rect(Point(x1, y1), Point(x2, y2)),
+        Rect(x1, y1, x2, y2),
         Landmarks(leftEye, rightEye, nose, leftMouthCorner, rightMouthCorner),
         floats[offset + 14]
     )

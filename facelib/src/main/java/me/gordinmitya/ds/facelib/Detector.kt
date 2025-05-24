@@ -45,7 +45,9 @@ class Detector : Closeable {
     }
 
     companion object {
-        private const val MODEL_PATH_PREFIX = "models/faceDetector.ncnn"
+        private const val MODEL_PATH_PREFIX = "models/face"
+
+        //        private const val MODEL_PATH_PREFIX = "models/faceDetector.ncnn"
         private const val MAX_FACES = 10 // maximum number of faces to detect
 
         init {

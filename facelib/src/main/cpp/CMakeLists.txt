@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.22.1)
 
 project("facelib")
 
-file(GLOB_RECURSE sources "src/*.cpp")
+file(GLOB SOURCES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 add_library(${CMAKE_PROJECT_NAME} SHARED
-        ${sources})
+        ${SOURCES})
 
 # set the path to the OpenCV cmake config
 set(OpenCV_DIR ${CMAKE_SOURCE_DIR}/vendor/opencv/sdk/native/jni)
