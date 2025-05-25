@@ -71,24 +71,30 @@ inline bool cmp(const Face &a, const Face &b) {
 }
 
 std::vector<Face> FaceDetector::run(cv::Mat &bgr) {
+    cv::Mat bgr_scale;
     float long_side = 1.f * std::max(bgr.cols, bgr.rows);
     float scale = max_side / long_side;
-    cv::Mat bgr_scale;
     cv::resize(bgr, bgr_scale, cv::Size(), scale, scale);
+// pnnx doesn't support dynamic size
+//    cv::resize(bgr, bgr_scale, cv::Size(max_side, max_side));
 
-    ncnn::Mat in = ncnn::Mat::from_pixels_resize(bgr_scale.data, ncnn::Mat::PIXEL_BGR,
-                                                 bgr_scale.cols, bgr_scale.rows,
-                                                 bgr_scale.cols, bgr_scale.rows);
+
+    ncnn::Mat in = ncnn::Mat::from_pixels(bgr_scale.data, ncnn::Mat::PIXEL_BGR,
+                                          bgr_scale.cols, bgr_scale.rows);
     in.substract_mean_normalize(mean, nullptr);
     ncnn::Extractor ex = net->create_extractor();
     ex.input(0, in);
     ncnn::Mat locOut, classOut, lmsOut;
-//    ex.extract("out0", locOut);
-//    ex.extract("out1", classOut);
-//    ex.extract("out2", lmsOut);
+
+// original names
     ex.extract("output0", locOut);
     ex.extract("530", classOut);
     ex.extract("529", lmsOut);
+
+// pnnx converted names
+//    ex.extract("out0", locOut);
+//    ex.extract("out1", classOut);
+//    ex.extract("out2", lmsOut);
 
     std::vector<Box> anchors = create_anchors(in.w, in.h);
     std::vector<Face> total_box;
