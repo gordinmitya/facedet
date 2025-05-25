@@ -55,6 +55,8 @@ JNICALL Java_me_gordinmitya_ds_facelib_Detector_createNet(
     auto net = std::make_unique<ncnn::Net>();
     net->opt.num_threads = 4;
     net->opt.lightmode = true;
+    // vulkan is broken on my emulator
+//    net->opt.use_vulkan_compute = ncnn::get_gpu_count() != 0;
 
     if (net->load_param(assetManager, (path + ".param").c_str()) != 0) {
         return 0;
