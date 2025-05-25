@@ -1,6 +1,3 @@
-[submodule "ultra-detector-1mb"]
-	path = ultra-detector-1mb
-	url = git@github.com:gordinmitya/Ultra-Light-Fast-Generic-Face-Detector-1MB.git
 [submodule "fast-detector-1mb"]
 	path = fast-detector-1mb
 	url = git@github.com:gordinmitya/Face-Detector-1MB-with-landmark.git
